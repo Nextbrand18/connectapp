@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Your Links</h2>
+<a class="btn btn-primary mb-2" href="{{ url_for('main.add_link') }}">Add New Link</a>
+<div class="row">
+  {% for link in links %}
+  <div class="col-md-4">
+    <div class="card mb-3">
+      {% if link.image_filename %}
+      <img src="{{ url_for('static', filename='uploads/' ~ link.image_filename) }}" class="card-img-top">
+      {% endif %}
+      <div class="card-body">
+        <h5 class="card-title">{{ link.title or link.url }}</h5>
+        <p class="card-text">{{ link.notes }}</p>
+        <a href="{{ link.url }}" target="_blank" class="btn btn-sm btn-success">Visit</a>
+        <a href="{{ url_for('main.edit_link', link_id=link.id) }}" class="btn btn-sm btn-warning">Edit</a>
+        <a href="{{ url_for('main.delete_link', link_id=link.id) }}" class="btn btn-sm btn-danger">Delete</a>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}
