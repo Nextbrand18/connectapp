@@ -6,12 +6,13 @@ from . import login_manager
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
-
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(100), unique=True, nullable=False)
     email = db.Column(db.String(150), unique=True, nullable=False)
     password_hash = db.Column(db.String(200), nullable=False)
+    bio = db.Column(db.Text, nullable=True)  # New field
+    profile_picture = db.Column(db.String(100), nullable=True)  # New field
     links = db.relationship('Link', backref='owner', lazy=True)
 
     def set_password(self, password):

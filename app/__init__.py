@@ -3,9 +3,11 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_uploads import configure_uploads, IMAGES, UploadSet
 from flask_wtf.csrf import CSRFProtect
+from flask_migrate import Migrate
 import os
 
 db = SQLAlchemy()
+migrate = Migrate()
 login_manager = LoginManager()
 photos = UploadSet('photos', IMAGES)
 csrf = CSRFProtect()
@@ -16,6 +18,7 @@ def create_app():
     
     # Initialize extensions with the app
     db.init_app(app)
+    migrate.init_app(app, db)
     login_manager.init_app(app)
     csrf.init_app(app)
     configure_uploads(app, photos)

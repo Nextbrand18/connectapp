@@ -1,14 +1,42 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="text-center mb-5">
-  <h2>Your Link Collection</h2>
-  <p class="lead text-muted">Manage all your important links in one place</p>
-  <a class="btn btn-primary btn-lg mt-2" href="{{ url_for('main.add_link') }}">
-    <i class="bi bi-plus-circle"></i> Add New Link
-  </a>
+<!-- Profile Header Section -->
+<div class="dashboard-profile mb-5">
+  <div class="row align-items-center">
+    <!-- Profile Picture Column -->
+    <div class="col-md-2 text-center text-md-start">
+      {% if current_user.profile_picture %}
+        <img src="{{ url_for('static', filename='profile_pics/' + current_user.profile_picture) }}" 
+             class="img-fluid rounded-circle mb-3 mb-md-0"
+             style="width: 120px; height: 120px; object-fit: cover;">
+      {% else %}
+        <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center mx-auto mx-md-0" 
+             style="width: 120px; height: 120px;">
+          <i class="bi bi-person-fill" style="font-size: 3rem;"></i>
+        </div>
+      {% endif %}
+    </div>
+    
+    <!-- Profile Info Column -->
+    <div class="col-md-8 text-center text-md-start">
+      <h2>{{ current_user.username }}</h2>
+      <p class="lead text-muted mb-3">
+        {{ current_user.bio or "Add a bio to tell people about yourself!" }}
+      </p>
+      <div class="d-flex gap-2 justify-content-center justify-content-md-start">
+        <a href="{{ url_for('main.add_link') }}" class="btn btn-primary">
+          <i class="bi bi-plus-circle"></i> Add Link
+        </a>
+        <a href="{{ url_for('main.profile') }}" class="btn btn-outline-secondary">
+          <i class="bi bi-pencil"></i> Edit Profile
+        </a>
+      </div>
+    </div>
+  </div>
 </div>
 
+<!-- Links Section (Your Existing Content) -->
 <div class="row g-4">
   {% for link in links %}
   <div class="col-md-4">
@@ -52,11 +80,23 @@
            class="mb-4">
       <h4>No links yet</h4>
       <p class="text-muted">Start by adding your first link</p>
-      <a href="{{ url_for('main.add_link') }}" class="btn btn-primary">
-        Add Your First Link
-      </a>
     </div>
   </div>
   {% endfor %}
 </div>
+
+<!-- Add some custom styling -->
+<style>
+  .dashboard-profile {
+    background-color: #f8f9fa;
+    padding: 2rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  }
+  @media (max-width: 768px) {
+    .dashboard-profile {
+      text-align: center;
+    }
+  }
+</style>
 {% endblock %}

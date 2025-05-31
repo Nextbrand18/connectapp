@@ -194,3 +194,4 @@ cython_debug/
 .cursorindexingignore
 
 note
+app/static/profile_pics/
