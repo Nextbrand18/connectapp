@@ -82,17 +82,14 @@ def delete_link(link_id):
     return redirect(url_for('main.dashboard'))
 
 
-# @main.route('/test-db')
-# def test_db():
-#     try:
-#         # Test user table
-#         users = User.query.all()
-#         user_data = [f"User: {u.username} (ID: {u.id})" for u in users]
-        
-#         # Test links table
-#         links = Link.query.all()
-#         link_data = [f"Link: {l.url} (User: {l.user_id})" for l in links]
-        
-#         return "<br>".join(user_data + link_data)
-#     except Exception as e:
-#         return f"Database error: {str(e)}"
+@main.route('/dashboard/<username>')  # Add this new route
+def public_dashboard(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    links = Link.query.filter_by(user_id=user.id).all()
+    return render_template('public_dashboard.html', links=links, user=user)
+
+@main.route('/dashboard')  # Keep your existing private dashboard
+@login_required
+def private_dashboard():
+    links = Link.query.filter_by(user_id=current_user.id)
+    return render_template('dashboard.html', links=links)
