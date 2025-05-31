@@ -1,21 +1,60 @@
 {% extends 'base.html' %}
+
 {% block content %}
-<h2>Your Links</h2>
-<a class="btn btn-primary mb-2" href="{{ url_for('main.add_link') }}">Add New Link</a>
-<div class="row">
+<div class="text-center mb-5">
+  <h2>Your Link Collection</h2>
+  <p class="lead text-muted">Manage all your important links in one place</p>
+  <a class="btn btn-primary btn-lg mt-2" href="{{ url_for('main.add_link') }}">
+    <i class="bi bi-plus-circle"></i> Add New Link
+  </a>
+</div>
+
+<div class="row g-4">
   {% for link in links %}
   <div class="col-md-4">
-    <div class="card mb-3">
+    <div class="card h-100">
       {% if link.image_filename %}
-      <img src="{{ url_for('static', filename='uploads/' ~ link.image_filename) }}" class="card-img-top">
-      {% endif %}
-      <div class="card-body">
-        <h5 class="card-title">{{ link.title or link.url }}</h5>
-        <p class="card-text">{{ link.notes }}</p>
-        <a href="{{ link.url }}" target="_blank" class="btn btn-sm btn-success">Visit</a>
-        <a href="{{ url_for('main.edit_link', link_id=link.id) }}" class="btn btn-sm btn-warning">Edit</a>
-        <a href="{{ url_for('main.delete_link', link_id=link.id) }}" class="btn btn-sm btn-danger">Delete</a>
+      <img src="{{ url_for('static', filename='uploads/' ~ link.image_filename) }}" 
+           class="card-img-top" 
+           style="height: 180px; object-fit: cover;">
+      {% else %}
+      <div class="card-img-top bg-primary text-white d-flex align-items-center justify-content-center" 
+           style="height: 180px;">
+        <i class="bi bi-link-45deg" style="font-size: 3rem;"></i>
       </div>
+      {% endif %}
+      <div class="card-body d-flex flex-column">
+        <h5 class="card-title">{{ link.title or link.url|truncate(30) }}</h5>
+        <p class="card-text text-muted">{{ link.notes|truncate(100) }}</p>
+        <div class="mt-auto d-flex justify-content-between">
+          <a href="{{ link.url }}" target="_blank" class="btn btn-sm btn-success">
+            <i class="bi bi-box-arrow-up-right"></i> Visit
+          </a>
+          <div>
+            <a href="{{ url_for('main.edit_link', link_id=link.id) }}" 
+               class="btn btn-sm btn-warning me-1">
+              <i class="bi bi-pencil"></i>
+            </a>
+            <a href="{{ url_for('main.delete_link', link_id=link.id) }}" 
+               class="btn btn-sm btn-danger">
+              <i class="bi bi-trash"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% else %}
+  <div class="col-12">
+    <div class="text-center py-5">
+      <img src="https://cdn-icons-png.flaticon.com/512/4076/4076478.png" 
+           style="width: 120px; opacity: 0.7;" 
+           class="mb-4">
+      <h4>No links yet</h4>
+      <p class="text-muted">Start by adding your first link</p>
+      <a href="{{ url_for('main.add_link') }}" class="btn btn-primary">
+        Add Your First Link
+      </a>
     </div>
   </div>
   {% endfor %}

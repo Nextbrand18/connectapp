@@ -1,0 +1,22 @@
+$env:FLASK_APP = "app.py"
+$env:FLASK_ENV = "development"
+flask run
+
+
+python3 -m venv venv
+venv\Scripts\activate
+
+
+Open this file:
+venv\Lib\site-packages\flask_uploads.py
+
+Change this line:
+
+#from werkzeug import secure_filename, FileStorage
+To:
+
+from werkzeug.utils import secure_filename
+from werkzeug.datastructures import FileStorage
+
+
+pip install psycopg2-binary

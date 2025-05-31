@@ -80,3 +80,19 @@ def delete_link(link_id):
     db.session.delete(link)
     db.session.commit()
     return redirect(url_for('main.dashboard'))
+
+
+# @main.route('/test-db')
+# def test_db():
+#     try:
+#         # Test user table
+#         users = User.query.all()
+#         user_data = [f"User: {u.username} (ID: {u.id})" for u in users]
+        
+#         # Test links table
+#         links = Link.query.all()
+#         link_data = [f"Link: {l.url} (User: {l.user_id})" for l in links]
+        
+#         return "<br>".join(user_data + link_data)
+#     except Exception as e:
+#         return f"Database error: {str(e)}"
